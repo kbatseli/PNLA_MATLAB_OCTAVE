@@ -1,7 +1,7 @@
 function [lcm h e] = getLCM(fsys,gsys,noiselevel)
 % [lcm h e] = getLCM(fsys,gsys,tol)
 % ---------------------------------
-% Returns the least common multiple of two given polynomials f and g. Also
+% Returns the approximate least common multiple of two given polynomials fsys and gsys. Also
 % the factor h such that lcm = g*h is calculated.
 %
 % lcm       =   vector, coefficient vector of polynomial which is the least

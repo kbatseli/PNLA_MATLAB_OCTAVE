@@ -1,7 +1,7 @@
 function [Unew Nnew tol] = updateOrth(U,N,M,varargin)
 % [Unew Nnew tol] = updateOrth(U,N,M,sparse)
 % ------------------------------------------
-% Updates the numerical kernel N of M(d) using the recursive
+% Updates the numerical basis for the row space U and kernel N of M(d) using the recursive
 % orthogonalization theorem.
 %
 % Unew          =   matrix, updated basis row space of M(d+1), number of

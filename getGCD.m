@@ -1,7 +1,7 @@
 function [gcd e] = getGCD(psys,qsys,tol)
 % [gcd e] = getGCD(psys,qsys,tol)
 % -------------------------------
-% Returns the greatest common divisor of two given polynomials p and q. The
+% Returns the approximate greatest common divisor of two given polynomials psys and qsys. The
 % mean squared errors (MSE) of the least common multiple and gcd are also
 % returned.
 %

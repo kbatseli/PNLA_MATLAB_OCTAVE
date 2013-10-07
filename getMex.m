@@ -2,8 +2,8 @@ function [Mex nzmax]= getMex(polysys,d,dmin,varargin)
 % Mex = getMex(polysys,d,dmin,sparseM)
 % ------------------------------------
 % 
-% Returns the extra rows that need to be adjoined to M(dmin) in order to
-% construct M(d). Suitable for iterative updating of M.
+% Returns the extra rows that need to be added to M(dmin) in order to
+% construct M(d). Suitable for recursive updating of M.
 %
 % Mex       =   matrix, contains the extra rows to go from M(dmin) to 
 %
