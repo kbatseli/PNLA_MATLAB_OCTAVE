@@ -113,7 +113,7 @@ Updates the numerical kernel N of M(d) using the recursive orthogonalization the
 Updates the numerical basis for the row space U and kernel N of M(d) using the recursive orthogonalization theorem. M contains the rows that need to be added to M(d) to form M(d+1).
 
 * [root d c ns check cr digits] = qdsparf(polysys)
-% ------------------------------------------------
+
 Quick & Dirty Sparse Affine Root-Finding algorithm. Uses SuiteSparseQR. Computes all affine roots of a given polynomial system polysys.
 
 * [root d c ns check cr digits] = sparf(polysys)
