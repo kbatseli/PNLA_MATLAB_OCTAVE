@@ -65,7 +65,6 @@ end
 puni=[];
 
 while isempty(puni)
-    if sparse
        [Y Sin Z]=svd(full(N(indices,:)'));
        sin=diag(Sin);
        rs=sum(sin > tol);
@@ -73,26 +72,14 @@ while isempty(puni)
        if (asin(Sin(min(size(Sin)),min(size(Sin)))) < tol) || (rs < size(Sin,2))
            puni=Z(:,end)';
        else
-           d =d +1;
-           indices=[indices feti([zeros(1,var-1) d zeros(1,n-var)])];
-           N=updateN(N,getMex(polysys,d,d-1,1),1);           
+			d =d +1;
+			indices=[indices feti([zeros(1,var-1) d zeros(1,n-var)])];
+			if sparse
+				N=updateN(N,getMex(polysys,d,d-1,1),1);      
+			else
+				N=updateN(N,getMex(polysys,d,d-1)); 
+			end
        end
-    else
-        % dense
-       [Y Sin Z]=svd(N(indices,:)');
-       sin=diag(Sin);
-       rs=sum(sin > tol);
-       
-       if (asin(Sin(min(size(Sin)),min(size(Sin)))) < tol) || (rs < size(Sin,2))
-           puni=Z(:,end)';
-       else
-           d =d +1;
-           indices=[indices feti([zeros(1,var-1) d zeros(1,n-var)])];
-           N=updateN(N,getMex(polysys,d,d-1));           
-       end
-        
-        
-    end
 end
 
 
