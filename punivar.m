@@ -1,11 +1,13 @@
-function puni = punivar(polysys,var,varargin)
-% puni = punivar(polysys,var,notsparse)
-% -------------------------------------
+function [puni d] = punivar(polysys,var,varargin)
+% [puni d] = punivar(polysys,var,notsparse)
+% -----------------------------------------
 % Returns the univariate polynomial p(x_i) obtained by the elimination of
 % all other variables from the polynomial system polysys.
 %
 % puni          =   row vector, coefficient vector of the univariate
 %                   polynomial, degree increases from left to right
+%
+% d 			=	scalar, degree at which the desired polynomial is found.
 %
 % polysys       =   cell containing coefficients and monomials exponents of the
 %                   set of polynomial equations.
