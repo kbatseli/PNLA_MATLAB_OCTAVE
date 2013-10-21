@@ -1,6 +1,6 @@
-function [p d] = elim(polysys,var,varargin)
-% [p d] = elim(polysys,var,notsparse)
-% -----------------------------------
+function [p d sintheta tol] = elim(polysys,var,varargin)
+% [p d sintheta tol] = elim(polysys,var,notsparse)
+% ------------------------------------------------
 % Returns a polynomial p which lies in the ideal of the polynomial system
 % polysys and from which all variables 'var' have been eliminated.
 %
@@ -8,6 +8,11 @@ function [p d] = elim(polysys,var,varargin)
 %               which 'var' has been eliminated.
 %
 % d         =   scalar, degree at which the desired polynomial is found.
+%
+% sintheta  =	scalar, sine of the smallest principal angle between the
+%				row space of M(d) and the eliminiation space.
+%
+% tol 		=	scalar, numerical tolerance used for the rank-test.
 %
 % polysys   =   cell containing coefficients and monomials exponents of the
 %               set of polynomial equations.
@@ -48,6 +53,7 @@ end
 % initialization of outputs
 p = [];
 d =0;
+sintheta=0;
 
 % number of equations and variables
 n_eq = size(polysys,1);
@@ -99,16 +105,17 @@ end
 
 while isempty(p)
        [Y Sin Z]=svd(full(N(indices,:)'));
-       sin=diag(Sin);
-       rs=sum(sin > tol);
        
-       if (asin(Sin(min(size(Sin)),min(size(Sin)))) < tol) || (rs < size(Sin,2))
+       if (asin(Sin(min(size(Sin)),min(size(Sin)))) < tol) || (size(Sin,1) < size(Sin,2))
 			if sparse				
 				p=spalloc(1,nchoosek(d+n,n),length(indices));
 			else
 				p=zeros(1,nchoosek(d+n,n));
 			end
-			p(1,indices)=Z(:,end)';		
+			p(1,indices)=Z(:,end)';	
+			if size(Sin,1) >= size(Sin,2)
+				sintheta=Sin(min(size(Sin)),min(size(Sin)));	
+			end
 			
        else
 			d =d +1;

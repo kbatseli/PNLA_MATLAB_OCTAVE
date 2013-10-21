@@ -28,23 +28,22 @@ n_eq = size(polysys,1);
 radsys = polysys;
 
 israd = 1;
-
 for i = 1 : n
 
     % first need the monic generators
-    [punivar angle tol] = univarpol(polysys,i);
-    punivar=punivar(1:find(abs(punivar)>tol(end),1,'last')); % prune numerical zero higher order terms
-    punivar(abs(punivar)<tol(end))=0; % set remaining numerical zeros to exact zero
-    ppunivar = prune(diffPoly(punivar,1,1),1);
-    ppunivar = ppunivar/norm(ppunivar);
-    lcm = getLCM(vec2polysys(punivar,1),vec2polysys(ppunivar,1));
-    h = (getM(vec2polysys(ppunivar,1),deg(lcm,1))'\lcm')';
+    [puni duni] = punivar(polysys,i);
+    tol=eps*max(getMDim(polysys,duni))*20;
+    puni=puni(1:find(abs(puni)>tol(end),1,'last')); % prune numerical zero higher order terms
+    puni(abs(puni)<tol(end))=0; % set remaining numerical zeros to exact zero
+    ppuni = prune(diffPoly(puni,1,1),1);
+    ppuni = ppuni/norm(ppuni);
+    [lcm h e] = getLCM(vec2polysys(puni,1),vec2polysys(ppuni,1),tol);
     h=h/norm(h);
-    if  (length(h)~= length(punivar)) || abs(punivar*h')-1 > tol(end)
+    if  (length(h)~= length(puni)) || abs(puni*h')-1 > tol
         israd = 0;        
     end
-    h=h(1:find(abs(h)>tol(end),1,'last'));
-    h(abs(h)<tol(end))=0;
+    h=h(1:find(abs(h)>tol,1,'last'));
+    h(abs(h)<tol)=0;
     
     temp = cell(1,2);
     coefI = find(h(1,:));

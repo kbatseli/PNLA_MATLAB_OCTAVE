@@ -1,6 +1,6 @@
-function [puni d] = punivar(polysys,var,varargin)
-% [puni d] = punivar(polysys,var,notsparse)
-% -----------------------------------------
+function [puni d sintheta tol] = punivar(polysys,var,varargin)
+% [puni d sintheta tol] = punivar(polysys,var,notsparse)
+% ------------------------------------------------------
 % Returns the univariate polynomial p(x_i) obtained by the elimination of
 % all other variables from the polynomial system polysys.
 %
@@ -8,6 +8,11 @@ function [puni d] = punivar(polysys,var,varargin)
 %                   polynomial, degree increases from left to right
 %
 % d 			=	scalar, degree at which the desired polynomial is found.
+%
+% sintheta  	=	scalar, sine of the smallest principal angle between the
+%					row space of M(d) and the eliminiation space.
+%
+% tol 			=	scalar, numerical tolerance used for the rank-test.
 %
 % polysys       =   cell containing coefficients and monomials exponents of the
 %                   set of polynomial equations.
@@ -36,6 +41,7 @@ end
 % number of variables
 n=size(polysys{1,2},2);
 d=getD0(polysys);
+sintheta=0;
 
 for i=1:size(polysys,1)
     polysys{i,1}=polysys{i,1}/norm(polysys{i,1});
@@ -68,11 +74,12 @@ puni=[];
 
 while isempty(puni)
        [Y Sin Z]=svd(full(N(indices,:)'));
-       sin=diag(Sin);
-       rs=sum(sin > tol);
        
-       if (asin(Sin(min(size(Sin)),min(size(Sin)))) < tol) || (rs < size(Sin,2))
-           puni=Z(:,end)';
+       if (asin(Sin(min(size(Sin)),min(size(Sin)))) < tol) || (size(Sin,1) < size(Sin,2))
+			puni=Z(:,end)';
+			if size(Sin,1) >= size(Sin,2)
+				sintheta=Sin(min(size(Sin)),min(size(Sin)));
+			end
        else
 			d =d +1;
 			indices=[indices feti([zeros(1,var-1) d zeros(1,n-var)])];
