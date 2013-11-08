@@ -31,10 +31,9 @@ israd = 1;
 for i = 1 : n
 
     % first need the monic generators
-    [puni duni] = punivar(polysys,i);
-    tol=eps*max(getMDim(polysys,duni))*20;
-    puni=puni(1:find(abs(puni)>tol(end),1,'last')); % prune numerical zero higher order terms
-    puni(abs(puni)<tol(end))=0; % set remaining numerical zeros to exact zero
+    [puni d sintheta tol] = punivar(polysys,i);
+    puni=puni(1:find(abs(puni)>tol,1,'last')); % prune numerical zero higher order terms
+    puni(abs(puni)<tol)=0; % set remaining numerical zeros to exact zero
     ppuni = prune(diffPoly(puni,1,1),1);
     ppuni = ppuni/norm(ppuni);
     [lcm h e] = getLCM(vec2polysys(puni,1),vec2polysys(ppuni,1),tol);

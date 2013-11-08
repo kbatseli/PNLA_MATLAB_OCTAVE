@@ -48,7 +48,7 @@ function [root varargout] = sparf(polysys)
 n=size(polysys{1,2},2);
 d=getD0(polysys);
 M=getM(polysys,d,1);
-[Q R P]=qr(M','vector');
+[Q R P]=qr(M');
 r=nnz(diag(R));
 c(d)=size(M,2)-r;
 N=Q(:,r+1:end);
@@ -66,7 +66,7 @@ while ~h
     counter=1;
     
     while counter <= length(checki)
-        [~, Sin Z]=svd(full(N([br checki(counter)],:)'));
+        [Y, Sin Z]=svd(full(N([br checki(counter)],:)'));
         if size(Sin,2)==1
             sin=Sin(1,1);
         else
@@ -77,11 +77,11 @@ while ~h
         if (asin(Sin(min(size(Sin)),min(size(Sin)))) < tol) || (rs < size(Sin,2))
             a = [a checki(counter)];
 		% remove all monomial multiples from checki(counter)
-		di=sum(frte(n,checki(counter)));
+		di=sum(fite(checki(counter),n));
 		if di<d
             multiplei=2:nchoosek(d-di+n,n); % indices of monomial multiples
             for j=1:length(multiplei)
-                checki(checki==fetr(frte(n,checki(counter))+frte(n,multiplei(j))))=[];
+                checki(checki==feti(fite(checki(counter),n)+fite(multiplei(j),n)))=[];
             end
         end
         else
@@ -93,7 +93,7 @@ while ~h
     % reduce the canonical decomposition and check pure powers
     Asys=cell(length(a),2);
     for i=1:length(a)
-        Asys{i,2}=frte(n,a(i));
+        Asys{i,2}=fite(a(i),n);
     end
     [h components] = hasAllPureComponents(Asys);
         
@@ -108,7 +108,7 @@ while ~h
             
             % determine index in N of 1st root at infinity            
             for i=a(end)+1:size(N,1)
-                [~, Sin Z]=svd(full(N([b i],:)'));
+                [Y, Sin Z]=svd(full(N([b i],:)'));
                 if size(Sin,2)==1
                     sin=Sin(1,1);
                 else
@@ -126,7 +126,7 @@ while ~h
         
         % check whether shifting br takes us onto rows corresponding with
         % roots at infinity
-        if length(br) > length(b) || (length(br)==length(b) && size(N,1)<=nchoosek(sum(frte(n,br(end)))+n,n) ) || (length(b)>length(br) && sum(frte(n,b(length(br)+1))) == sum(frte(n,b(length(br))))+1)
+        if length(br) > length(b) || (length(br)==length(b) && size(N,1)<=nchoosek(sum(fite(br(end),n))+n,n) ) || (length(b)>length(br) && sum(fite(b(length(br)+1),n)) == sum(fite(b(length(br)),n))+1)
             % shift took us to a root at infinity, need 1 more iteration
             h=0;
             d=d+1;
@@ -134,9 +134,9 @@ while ~h
             c(d)=size(N,2);
         else
             % everything OK, proceed to construct the eigenvalue problem
-            db   = nchoosek(sum(frte(n,br(end)))+n,n);
-            dbp1 = nchoosek(sum(frte(n,br(end)))+n+1,n);
-            [~, ~, W]=svd(full(N(1:db,:)));
+            db   = nchoosek(sum(fite(br(end),n))+n,n);
+            dbp1 = nchoosek(sum(fite(br(end),n))+n+1,n);
+            [y,s, W]=svd(full(N(1:db,:)));
             Z=N(1:dbp1,:)*W;
             B=Z(1:db,1:length(br));
             
@@ -146,7 +146,7 @@ while ~h
             coef = randn(1,n);  % take random components
             for j = 1 : n
                 for i = 1:db            
-                    A(i,:) = A(i,:) + coef(j)*Z(fetr([zeros(1,j-1) 1 zeros(1,n-j)]+frte(n,i)),1:length(br));
+                    A(i,:) = A(i,:) + coef(j)*Z(feti([zeros(1,j-1) 1 zeros(1,n-j)]+fite(i,n)),1:length(br));
                 end
             end
             

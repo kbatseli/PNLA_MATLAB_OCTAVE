@@ -89,7 +89,7 @@ while isempty(lcm) && d <= df+dg
         h =  (M'\lcm')';   
         e = norm(lcm-h*M);
     else
-      d=d+1
+      d=d+1;
       [Qf Nf tol] = updateOrth(Qf,Nf,getMex(fsys,d,d-1,1),1);
       Ng = updateN(Ng,getMex(gsys,d,d-1,1),1);      
     end
