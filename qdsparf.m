@@ -83,7 +83,7 @@ while ~h
     acol = sort(Pv(crs(d)+1:end));    
     for i = 1 : length(acol)
         Asys{i,1} = 1;
-        Asys{i,2} = frte(size(polysys{1,2},2),acol(i));
+        Asys{i,2} = fite(acol(i),size(polysys{1,2},2));
     end    
     % find reduced monomial system
     Asys = reduceAsys(Asys);
@@ -102,7 +102,7 @@ while ~h
         % normal set for affine roots
 %         ns = getCra(Asys,sum(c)-n);
         
-        if fetr([1 zeros(1,n-1)]+frte(n,ns(end))) > size(Vs,1)
+        if feti([1 zeros(1,n-1)]+fite(ns(end),n)) > size(Vs,1)
             h = 0;
             d = d+1;
         else
@@ -110,7 +110,7 @@ while ~h
         % initialize root
         root = zeros(n,length(ns));
         check = zeros(1,length(ns));
-        dns = sum(frte(n,ns));  % highest degree of element in affine normal set
+        dns = sum(fite(ns,n));  % highest degree of element in affine normal set
         
         % third QR of Vs(ns,:) to determine which columns we'll need for
         % constructing the eigenvalue problem
@@ -133,8 +133,8 @@ while ~h
        coef = randn(1,n);  % take random components
        for j = 1 : n
         for i = 1:size(B,1)            
-%                 A(i,:) = A(i,:) + coef(j)*Vs(fetr([zeros(1,j-1) 1 zeros(1,n-j)]+frte(n,i)),columns);
-               A(i,:) = A(i,:) + coef(j)*Vs(fetr([zeros(1,j-1) 1 zeros(1,n-j)]+frte(n,ns(i))),columns);
+%                 A(i,:) = A(i,:) + coef(j)*Vs(feti([zeros(1,j-1) 1 zeros(1,n-j)]+fite(i,n)),columns);
+               A(i,:) = A(i,:) + coef(j)*Vs(feti([zeros(1,j-1) 1 zeros(1,n-j)]+fite(ns(i),n)),columns);
             end        
         end
 
