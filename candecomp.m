@@ -46,13 +46,13 @@ function [a b R] = candecomp(polysys,d,varargin)
 % initialize
 n=size(polysys{1,2},2);
 d0=getD0(polysys);
-M=getM(polysys,d0,1);
-[Q R P]=qr(M','vector');
-r=nnz(diag(R));
-c(d)=size(M,2)-r;
-N=Q(:,r+1:end);
-
-clear Q R P
+N=null(getM(polysys,d0));
+% M=getM(polysys,d0);
+% [Q R P]=qr(M',0);
+% r=nnz(diag(R));
+% c(d)=size(M,2)-r;
+% N=Q(:,r+1:end);
+% clear Q R P
 
 % recursively update orthogonal basis for null space
 for i=d0+1:d

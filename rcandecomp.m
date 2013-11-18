@@ -47,13 +47,14 @@ function [a b R] = rcandecomp(polysys,d,varargin)
 % initialize
 n=size(polysys{1,2},2);
 d0=getD0(polysys);
-M=getM(polysys,d0,1);
-[Q R P]=qr(M','vector');
-r=nnz(diag(R));
-c(d)=size(M,2)-r;
-N=Q(:,r+1:end);
+N=null(getM(polysys,d0));
 
-clear Q R P
+% M=getM(polysys,d0,1);
+% [Q R P]=qr(M','vector');
+% r=nnz(diag(R));
+% c(d)=size(M,2)-r;
+% N=Q(:,r+1:end); 
+% clear Q R P
 
 % recursively update orthogonal basis for null space
 for i=d0+1:d
@@ -66,6 +67,7 @@ r=nchoosek(d+n,n)-size(N,2); %rank
 checki = [1:size(N,1)]; %contains indices of monomials that need to be checked for linear independence
 a=[];
 b=[];
+rcounter=1;
 R=spalloc(nchoosek(d+n,n),nchoosek(d+n,n),nchoosek(d+n,n)*(c+1));
 if isempty(varargin)
     tol=sum(size(N))*eps;
@@ -75,7 +77,7 @@ end
 counter=1;
 
 while counter <= length(checki)
-    [~, Sin Z]=svd(full(N([b checki(counter)],:)'));
+    [Y, Sin Z]=svd(full(N([b checki(counter)],:)'));
     if size(Sin,2)==1
         sin=Sin(1,1);
     else
@@ -86,20 +88,21 @@ while counter <= length(checki)
     if (asin(Sin(min(size(Sin)),min(size(Sin)))) < tol) || (rs < size(Sin,2))
         a = [a checki(counter)];
         % remove all monomial multiples from checki(counter)
-        di=sum(frte(n,checki(counter)));
+        di=sum(fite(checki(counter),n));
         if di<d
             multiplei=2:nchoosek(d-di+n,n); % indices of monomial multiples
             for j=1:length(multiplei)
-                checki(checki==fetr(frte(n,checki(counter))+frte(n,multiplei(j))))=[];
+                checki(checki==feti(fite(checki(counter),n)+fite(multiplei(j),n)))=[];
             end
         end
-        R(counter,[b checki(counter)])=Z(:,end);
+        R(rcounter,[b checki(counter)])=Z(:,end);
+        rcounter=rcounter+1;
     else
         b=[b checki(counter)];
     end
     counter = counter + 1;
 end
-R=R(a,:);
+R=R(1:length(a),:);
 
 end
 
