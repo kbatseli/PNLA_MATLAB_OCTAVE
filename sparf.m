@@ -150,15 +150,28 @@ while ~h
                 end
             end
             
-            [V D]=eig(pinv(B)*A);
+            [V D]=eig(pinv(B)*A);                        
             
             K=Z(1:n+1,1:length(br))*V;
             K=K*diag(1./K(1,:));
-            root=K(2:end,:).';
+            root=K(2:end,:);
+            
+            % check whether we found the roots
+            K = makeRoot(getD0(polysys),root.');        
+            for i = 1 : size(K,2)
+                check(i) = norm(polysys2vec(polysys,getD0(polysys))*K(:,i)); % 
+            end
+            getal=0;for i=1:getD0(polysys),getal=getal+i*nchoosek(i+n-1,n-1);end        
+            [check I] = sort(check);
+            digits = floor(-log10(check/getal));
+            root = root(:,I).';
+            
             varargout{1}=d;
             varargout{2}=components;
             varargout{3}=br;
-            varargout{4}=c;
+            varargout{4}=check;
+            varargout{5}=c;
+            varargout{6}=digits;
             
         end
         

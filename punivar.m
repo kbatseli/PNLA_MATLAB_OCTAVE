@@ -51,7 +51,7 @@ end
 if sparse
     M=getM(polysys,d,1)';
     % orthogonal basis kernel(M)
-    [Q R P]=qr(M,'vector');
+    [Q R P]=qr(M);
     r=nnz(diag(R));
     N=Q(:,r+1:end);
     tol=20*sum(size(M))*eps;

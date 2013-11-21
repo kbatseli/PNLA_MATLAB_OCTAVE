@@ -90,7 +90,7 @@ indices = temp;
 if sparse
     M=getM(polysys,d,1)';
     % orthogonal basis kernel(M)
-    [Q R P]=qr(M,'vector');
+    [Q R P]=qr(M);
     r=nnz(diag(R));
     N=Q(:,r+1:end);
     tol=20*sum(size(M))*eps;
@@ -135,9 +135,9 @@ while isempty(p)
 			end    
 
 			if sparse
-				N=updateN(N,getMex(polysys,d,d-1,1),1);      
+				[N tol]=updateN(N,getMex(polysys,d,d-1,1),1);      
 			else
-				N=updateN(N,getMex(polysys,d,d-1)); 
+				[N tol]=updateN(N,getMex(polysys,d,d-1)); 
 			end
        end
 end
