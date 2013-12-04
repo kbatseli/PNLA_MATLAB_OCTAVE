@@ -37,7 +37,7 @@ switch nargin
         sparseM=1;
         defaultTol = 0;
     otherwise
-        error('Minimum 3 input arguments are required');
+        error('Minimum 2 input arguments are required');
 end
 
 
@@ -59,6 +59,9 @@ if ~sparseM
     st = diag(St);
     tol = eps(st(1))*max(size(temp));
     dr = sum(st > tol);
+    if dr < length(st) && st(dr)/st(dr+1) < 100
+        warning(['Warning: approxi-rank gap is ' num2str(st(dr)/st(dr+1)) ', numerical rank might be ill-defined.']);
+    end
 else
     [Ut R P] = qr(temp);
     tol = 20*sum(size(temp))*eps;        

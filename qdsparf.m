@@ -123,7 +123,7 @@ while ~h
        B = full(Vs(ns,columns));
        % At this point B should be a square full rank matrix!
        if rank(B) ~= size(B,2)
-            disp('warning: B matris is not of full rank')
+            disp('warning: B matrix is not of full rank')
             [size(B,2) rank(B)]
        end
        A = zeros(size(B,1),size(B,1));

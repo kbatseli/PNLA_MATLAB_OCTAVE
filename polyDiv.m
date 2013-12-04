@@ -92,7 +92,7 @@ D = getD(polysys,p,1);    % construct divisor matrix
 p=p(1:size(D,2));
 
 % %% determine rank of Divisor matrix
-[Q R P] = qr(D','vector');
+[Q R P] = qr(D',0);
 % [Q R P] = spqr(D',struct('Q','matrix','permutation','vector')); %
 % SuiteSparseQR
 rankD = length(find(diag(R)));
@@ -107,7 +107,7 @@ V = Q(:,rankD+1:end);
 clear Q R P
 
 % Determine normal set that will span the remainder
-[~, ~, Pv] = qr(V','vector');
+[~, ~, Pv] = qr(V',0);
 % [Qv Rv Pv] = spqr(V',struct('Q','discard','permutation','vector'));
 rowI = sort(Pv(1:size(V,2)));
 B = sparse(1:size(V,2),rowI,ones(1,size(V,2)),size(V,2),size(D,2),size(V,2));
