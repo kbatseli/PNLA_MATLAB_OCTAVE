@@ -1,8 +1,10 @@
 function [N, nM, tol]=sparseN(polysys,d)
-% [N, nM, tol]=sparseN(polysys,d)
-% -------------------------------
+% [N, nM, tol]=sparseN(polysys,d) or [N, nM, tol]=sparseN(M,tol)
+% --------------------------------------------------------------
 % Computes a sparse basis for the null space of the Macaulay matrix for a
-% given polynomial system polysys and degree d.
+% given polynomial system polysys and degree d. Instead of providing a
+% polysys cell one can also give the matrix directly as an input argument
+% together with the tolerance that needs to be used.
 %
 % N             =   matrix, sparse basis for null space of M(d)
 %
@@ -17,6 +19,11 @@ function [N, nM, tol]=sparseN(polysys,d)
 %
 % d             =	scalar, degree for which M(d) has to be constructed from polysys
 %
+% M             =   matrix, matrix from which the sparse null space needs
+%                   to be computed
+%
+% tol           =   scalar, the tolerance used for the rank-test
+%
 % CALLS
 % -----
 %
@@ -24,6 +31,7 @@ function [N, nM, tol]=sparseN(polysys,d)
 %
 % Kim Batselier, december 2013
 
+if iscell(polysys)
 s=size(polysys,1);
 n=size(polysys{1,2},2);
 
@@ -38,9 +46,16 @@ end
 initialM=getM(polysys,d,1); 
 [p, q]=size(initialM);
 
-tol=max(p,q)*eps(sqrt(s));
+tol=max(p,q)*eps*(sqrt(s));    
+    
+elseif ismatrix(polysys)
+    initialM=polysys;
+    [p,q]=size(polysys);
+    tol=d;
+end
+
 nM=zeros(1,p);
-nM(1)=norm(initialM(1,:));
+nM(1)=norm(initialM(1,:),1);
 
 % indices of nonzero coefficients
 nindex=find(initialM(1,:));
@@ -84,7 +99,7 @@ N=sparse(rowI,colI,values,q,q-1,length(zindex)+2*(length(nindex)-1));
 [p,q]=size(M);
 
 for i=1:p
-    nM(i+1)=norm(M(1,:));
+    nM(i+1)=norm(M(1,:),1);
     if nM(i+1) > tol
         nindex=find(M(1,:));
         zindex=setdiff(1:q,nindex);
@@ -113,4 +128,5 @@ for i=1:p
        M=M(2:end,:);
        [p,q]=size(M); 
     end
+end
 end
