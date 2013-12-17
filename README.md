@@ -22,7 +22,7 @@ x^a = x_1^a_1 * x_2^a_2 * ... * x_n^a_n,
 
 where a is an n-tuple of nonnegative integers.
 
-A system of s multivariate polynomials is represented by an s-by-2 Any Array. The first column elements are vectors containing the coefficients. The second column elements are matrices containing the corresponding exponents. For example, the system
+A system of s multivariate polynomials is represented by an s-by-2 cell. The first column elements are vectors containing the coefficients. The second column elements are matrices containing the corresponding exponents. For example, the system
 
 f_1 = 5.3 x_1^2 + 9 x_2 x_3 -1,  
 f_2 = 2 x_1^3 + .5 x_2^2 - 7.89 x_3 - 94,  
