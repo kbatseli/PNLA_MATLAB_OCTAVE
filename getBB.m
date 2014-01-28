@@ -35,7 +35,7 @@ for i=1:length(border)
 	
 	if ~isempty(temp)
 		if size(temp,2) > 1
-			disp(['warning: multiple solutions detected for leading term: ' num2str(a(i))])
+			disp(['warning: multiple solutions detected for leading term: ' num2str(border(i))])
 			bb(i,:) = temp(:,1);
 		else
 			bb(i,:) = temp;
