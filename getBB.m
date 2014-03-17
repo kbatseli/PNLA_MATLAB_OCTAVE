@@ -28,7 +28,7 @@ for i=d0+1:d
 end
 
 border = getBorder(b,n);
-bb = zeros(length(border),length(b)+1);
+bb = zeros(length(border),nchoosek(d+n,n));
 
 for i=1:length(border)
 	temp = null(N([b border(i)],:)');
@@ -36,9 +36,9 @@ for i=1:length(border)
 	if ~isempty(temp)
 		if size(temp,2) > 1
 			disp(['warning: multiple solutions detected for leading term: ' num2str(border(i))])
-			bb(i,:) = temp(:,1);
+			bb(i,[b border(i)]) = temp(:,1);
 		else
-			bb(i,:) = temp;
+			bb(i,[b border(i)]) = temp;
 		end
 	end
 
