@@ -64,7 +64,7 @@ r=nchoosek(d+n,n)-size(N,2); %rank
 % canonical decomposition on basis for null space
 a=[];
 b=[];
-R=spalloc(r,nchoosek(d+n,n),r*(c+1));
+R=spalloc(nchoosek(d+n,n),nchoosek(d+n,n),r*(c+1));
 if isempty(varargin)
     tol=sum(size(N))*eps;
 else
