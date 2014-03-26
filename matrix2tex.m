@@ -12,14 +12,14 @@ function matrix2tex(M,n)
 
 [p q] = size(M);
 
-d = sum(frte(n,q));
+d = sum(fite(q,n));
 
 
 openingstring = ['\bordermatrix{\text{}'];
 monomial = '&1';
 
 for i = 2:q
-    exponent = frte(n,i);
+    exponent = fite(i,n);
     monomial = [monomial '&'];
     for j = 1:n
         if exponent(j)
