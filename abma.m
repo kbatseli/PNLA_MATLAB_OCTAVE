@@ -35,10 +35,13 @@ polysys=[];
 [m,n] = size(root);
 
 if isempty(varargin)
+    mult=cell(1,m);
     % no multiplicities
     for i=1:m
         mult{i}=1;
     end
+else
+    mult=varargin{1};
 end
 
 stop=0;
@@ -52,7 +55,7 @@ while ~stop
     for i=1:m       % for each root
         % determine order of differentiation    
         ddiff=0;
-        while nchoosek(d+n,n) < size(mult{i},1)
+        while nchoosek(ddiff+n,n) < size(mult{i},1)
             ddiff=ddiff+1;
         end
         
@@ -78,7 +81,7 @@ while ~stop
     else
         % canonical decomposition
         for i=1:length(indices)
-            [~, S Z]=svd(full(K([b indices(i)],:)'));
+            [~, S,Z]=svd(full(K([b indices(i)],:)'));
             if size(S,2)==1
                 S=S(1,1);
             else
