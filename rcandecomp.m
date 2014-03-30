@@ -70,7 +70,7 @@ else
 end
 
 % first check whether 1 is in the ideal
-[Y, Sin Z]=svd(full(N(1,:)'));
+[Y,Sin,Z]=svd(full(N(1,:)'));
 if size(Sin,2)==1
     sin=Sin(1,1);
 else
@@ -103,7 +103,7 @@ for counter=2:length(checki)
     if counter > length(checki)
         break
     end
-    [Y, Sin Z]=svd(full(N([b(1:bcounter-1) checki(counter)],:)'));
+    [Y,Sin,Z]=svd(full(N([b(1:bcounter-1) checki(counter)],:)'));
     if size(Sin,2)==1
         sin=Sin(1,1);
     else

@@ -72,7 +72,7 @@ else
 end
 
 for i=1:size(N,1)
-    [~, Sin Z]=svd(full(N([b i],:)'));
+    [U,Sin,Z]=svd(full(N([b i],:)'));
     if size(Sin,2)==1
         sin=Sin(1,1);
     else

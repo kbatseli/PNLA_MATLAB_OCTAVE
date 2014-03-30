@@ -81,7 +81,7 @@ while ~stop
     else
         % canonical decomposition
         for i=1:length(indices)
-            [~, S,Z]=svd(full(K([b indices(i)],:)'));
+            [U,S,Z]=svd(full(K([b indices(i)],:)'));
             if size(S,2)==1
                 S=S(1,1);
             else
