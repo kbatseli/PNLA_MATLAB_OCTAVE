@@ -122,9 +122,11 @@ end
                 ppindices(find(exponents(ii,:)))=ii;
             end
         end
-        ppindices(ppindices==0)=[];  % keep only indices of pure powers in B
         
         for ii=1:length(ppindices)
+            
+            if ppindices(ii) ~= 0
+            
             % determine connected components for each pure power in B
             connected = b(ppindices(ii));
             index=ppindices(ii);
@@ -152,6 +154,7 @@ end
             if ~isempty(find(allexponents(:,ii)==0))
                 satisfied=0;
                 break;
+            end
             end
         end
         
